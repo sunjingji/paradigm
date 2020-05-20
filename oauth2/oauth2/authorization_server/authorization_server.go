@@ -12,14 +12,12 @@ import (
 	"gopkg.in/oauth2.v3/store"
 	"log"
 	"net/http"
-	"time"
 )
 
 func main() {
 	manager := manage.NewDefaultManager()
 	cfg := manage.DefaultAuthorizeCodeTokenCfg
-	cfg.AccessTokenExp = time.Second*100
-	//manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
+	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
 	manager.SetAuthorizeCodeTokenCfg(cfg)
 
 	// token memory store
@@ -47,6 +45,13 @@ func main() {
 	})
 
 	// 引导用户进行授权，需要业务代码实现
+	// 这个函数是业务逻辑实现的关键，流程如下：
+	// 1)第三方要求进行授权时，要依次检查用户是否已经登录，是否已对此应用做过授权。如果有未完成项(未登录或未授权)，先保存请求参数到session当中，然后跳转到相应登录/授权页面。
+	// 2)取得用户授权后，需要返回userID(给上层的HandleAuthorizeRequest调用)。
+	//
+	// 注意：HandleAuthorizeRequest()后续生成授权码时，会调用AuthorizeScopeHandler设置授权域，调用AccessTokenExpHandler设置Token有效期。
+	//      所以，需要在这个函数中提前做好簿记，把相关信息存储在某个位置，让AuthorizeScopeHandler和AccessTokenExpHandler可以访问到，这样才能把整个授权链串起来。
+	// 参考 gopkg.in/oauth2.v3/example/server
 	srv.SetUserAuthorizationHandler(func(w http.ResponseWriter, r *http.Request) (userID string, err error) {
 		return "demo", nil
 	})
