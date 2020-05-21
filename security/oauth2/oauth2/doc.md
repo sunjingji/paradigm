@@ -1,6 +1,3 @@
-package oauth2
-
-/*
 OAuth 的核心就是向第三方应用颁发令牌。
 OAuth 2.0(RFC6749) 规定了四种获得令牌的流程。你可以选择最适合自己的那一种，向第三方应用颁发令牌。下面就是这四种授权方式。
     授权码（authorization-code）
@@ -80,4 +77,3 @@ OAuth2.0 授权码授权流程如下，参考图：oauth2.png。
 
 注1: 阿里云针对Native应用登录，引入了Proof Key机制的原理，即使用code_verifier代替client_secret。
 注2：OIDC（OpenID Connect）是建立在OAuth 2.0基础上的一个认证协议，参考阿里云通过OIDC获取用户信息的文档。
-*/
