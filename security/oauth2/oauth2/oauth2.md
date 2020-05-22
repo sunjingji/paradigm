@@ -71,13 +71,13 @@ OAuth2.0 授权码授权流程如下，参考图：oauth2.png。
 从上面代码可以看到，相关参数使用JSON格式发送（Content-Type: application/json）。此外，HTTP头信息中明确指定不得缓存。
 
 参考：
-  Oauth2              https://tools.ietf.org/html/rfc6749
-  Oauth2 Bear Token   https://tools.ietf.org/html/rfc6750
-  Oauth2的一个解释      http://www.ruanyifeng.com/blog/2019/04/oauth_design.html
-  OAuth2的四种授权方式   http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html
-  Web应用登录阿里云      https://helpcdn.aliyun.com/document_detail/93696.html
+  Oauth2              https://tools.ietf.org/html/rfc6749  
+  Oauth2 Bear Token   https://tools.ietf.org/html/rfc6750  
+  Oauth2的一个解释      http://www.ruanyifeng.com/blog/2019/04/oauth_design.html  
+  OAuth2的四种授权方式   http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html  
+  Web应用登录阿里云      https://helpcdn.aliyun.com/document_detail/93696.html  
 
-注1: 针对Native应用登录，Oauth2引入了Proof Key机制的原理，即使用code_verifier代替client_secret。
+注1: 针对Native应用登录，Oauth2引入了Proof Key机制的原理，即使用code_verifier代替client_secret。  
 注2：OIDC（OpenID Connect）是建立在OAuth 2.0基础上的一个认证协议，参考阿里云通过OIDC获取用户信息的文档。
 
 参考：[OAuth 2.0](https://oauth.net/2/),[OAuth 2 Simplified](https://aaronparecki.com/oauth-2-simplified/),[OpenID Connect](https://openid.net/connect/)
