@@ -70,7 +70,7 @@ OAuth2.0 授权码授权流程如下，参考图：oauth2.png。
     }
 从上面代码可以看到，相关参数使用JSON格式发送（Content-Type: application/json）。此外，HTTP头信息中明确指定不得缓存。
 
-参考：
+参考：  
   Oauth2              https://tools.ietf.org/html/rfc6749  
   Oauth2 Bear Token   https://tools.ietf.org/html/rfc6750  
   Oauth2的一个解释      http://www.ruanyifeng.com/blog/2019/04/oauth_design.html  
