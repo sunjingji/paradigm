@@ -73,7 +73,7 @@ OS命令注入和SQL注入差不多，只不过SQL注入是针对数据库的，
 
 业务系统确认用户身份后，会发放一个身份凭证，在凭证失效以前，用户只要出示这个凭证，业务系统就认可用户的身份，避免了需要用户频繁登录的问题。
 
-认证系统要回答的问题：
+**认证系统要回答的问题**：
 
 - 身份凭证的格式，保存方式，在客户和业务系统间如何传递，怎么保证不被他人盗用，怎么防止凭证被篡改，这些就是认证系统要考虑的核心问题。
 - 其次，认证系统如何与业务系统结合，怎么横向扩展，如何给开发人员提供方便使用的界面，这是认证系统的非功能需求。
@@ -120,17 +120,33 @@ Jwt 载荷部分可以存储业务相关的信息（非敏感的），例如用�
   [Introduction to JSON Web Tokens](https://jwt.io/introduction/)
   [什么是 JWT -- JSON WEB TOKEN](https://www.jianshu.com/p/576dbf44b2ae)
 
-#### 2.2.2 Oauth2
+#### 2.2.2 Oauth2 & OIDC
 Oauth2 是一个授权框架，不像 JWT 只是一个生成和验证 Token 的协议，但 Oauth2 可以 和 JWT 一起使用。
 
-Oauth2 授权通过后会发放一个AccessToken。 可以按JWT格式构造AccessToken，在AccessToken中存储更多的授权信息，但认证系统都必须保存未到期却已注销的 AccessToken 信息，以防备用户撤销或更改授权。
+Oauth2 授权通过后会发放一个AccessToken。可以按JWT格式构造AccessToken，在AccessToken中存储更多的授权信息，但Oauth2服务端必须保存未到期却已注销的 AccessToken 信息，以防备用户撤销或更改授权。
 
-另外在使用OpenId的场景中，比如微信是基于oauth2授权的，用户扫码登录我需要微信授权，然后微信授权以后，用户也点击确认之后我就认定用户为合法用户，自己用jwt生成一个token给用户。 用户每次访问都带着token访问我。 在这里微信给我是授权，我给用户是认证。
+另外在使用OIDC的场景中，比如微信是基于oauth2授权的，用户扫码登录我需要微信授权，然后微信授权以后，用户也点击确认之后我就认定用户为合法用户，自己用jwt生成一个token给用户。 用户每次访问都带着token访问我。 在这里微信给我是授权，我给用户是认证。
 
 **适用场景：如果设计的API要被不同的App使用，并且每个App使用的方式也不一样，使用OAuth2是个不错的选择。**
 
 **一个安全小问题：为什么用OAuth2协议是安全的呢？**  
 答：以OAuth2授权码流程为例，当resource owner允许客户端访问某些资源后，然后授权服务器会生成responseCode，并重定向到ClientA的某个链接中（链接中需要带responseCode）。这里完全不用担心responseCode被泄露，因为其他Client没有ClientA的Secret，所以根本无法使用这个responseCode。另一个安全前提是授权服务需开放HTTPS的接口，因为访问资源的请求必须携带AccessToken，在HTTP环境下，也是可能被截获的。
+
+**Oauth2和OIDC的关系式什么?**  
+这里有一篇文章，对OIDC说的非常透传，可以参考 [OIDC(OpenId Connect)身份认证(核心部分)](https://www.cnblogs.com/linianhui/archive/2017/05/30/openid-connect-core.html)。  
+OIDC在Oauth2的基础上实现了身份认证，扩展了一个Id Token，用来标识用户身份。
+Id Token是认证系统发放的可以验证真伪的用户身份令牌。oauth2发放的AccessToken是一个访问许可令牌。
+一个是身份认证，一个是访问授权。  
+Id Token不能包含太多信息，要不然太长了，来回传输不方便。通常通过UserInfo接口来提供用户的详细信息
+，UserInfo是受Oauth2保护的，必须使用AccessToken来访问。
+
+**单点登录**  
+单点登录历史最悠久的协议是[SAML](https://www.jianshu.com/p/636c1ee16eba)，它是一个简单的
+登录认证协议。  
+基本流程：用户登录服务B时，服务B到用户身份提供方A去认证用户的身份，A验证用户的身份(如果用户还没有
+没有登录，则要求用户初始账号/密码)，并响应服务B，服务B从认证响应当中提取服务B能识别的用户身份信息，
+用户登录服务B完成。  
+OIDC也可以用来实现单点登录，而且对移动端APP支持的更好。
 
 #### 2.2.3 HMAC(AK/SK)
 HMAC预先生成一个 access key（AK） 和 secure key（SK），然后通过签名的方式完成认证请求，这种方式可以避免传输 secure key，且大多数情况下签名只允许使用一次，避免了重放攻击。
@@ -151,6 +167,12 @@ HMAC预先生成一个 access key（AK） 和 secure key（SK），然后通过�
     HTTP Digetst认证方式，其实和HMAC思想是一样的，为了防止重放攻击，采用摘要访问认证。
     客户发送一个请求后，收到一个401消息，消息中还包括一个唯一的字符串：nonce，每次请求都不一样。
     此时客户端将用户名、密码、nonce、HTTP Method和URI为校验值基础进行散列（默认为MD5）的摘要返回给服务器。
+
+
+插播：
+
+    authentication 认证，证明你是你
+    authorization  授权，允许你干什么
 
 ## 3. HTTPS
 从上面对Web安全漏洞和认证授权的分析可以看出，无论怎么做，https都是安全的基础，现代的互联网应用应该完全摈弃裸奔的http。

@@ -1,5 +1,7 @@
 OAuth 的核心就是向第三方应用颁发令牌。
+
 OAuth 2.0(RFC6749) 规定了四种获得令牌的流程。你可以选择最适合自己的那一种，向第三方应用颁发令牌。下面就是这四种授权方式。
+
     授权码（authorization-code）
     隐藏式（implicit）
     密码式（password）：
@@ -7,8 +9,8 @@ OAuth 2.0(RFC6749) 规定了四种获得令牌的流程。你可以选择最适�
 注意，不管哪一种授权方式，第三方应用申请令牌之前，都必须先到系统备案，说明自己的身份，然后会拿到两个身份识别码：客户端 ID（client ID）和客户端密钥（client secret）。
 这是为了防止令牌被滥用，没有备案过的第三方应用，是不会拿到令牌的。
 
-
 OAuth2.0 授权码授权流程如下，参考图：oauth2.png。
+
 1. 申请授权码
 客户端把用户导向微博授权服务器。
 例如：
@@ -75,5 +77,7 @@ OAuth2.0 授权码授权流程如下，参考图：oauth2.png。
   OAuth2的四种授权方式   http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html
   Web应用登录阿里云      https://helpcdn.aliyun.com/document_detail/93696.html
 
-注1: 阿里云针对Native应用登录，引入了Proof Key机制的原理，即使用code_verifier代替client_secret。
+注1: 针对Native应用登录，Oauth2引入了Proof Key机制的原理，即使用code_verifier代替client_secret。
 注2：OIDC（OpenID Connect）是建立在OAuth 2.0基础上的一个认证协议，参考阿里云通过OIDC获取用户信息的文档。
+
+参考：[OAuth 2.0](https://oauth.net/2/),[OAuth 2 Simplified](https://aaronparecki.com/oauth-2-simplified/),[OpenID Connect](https://openid.net/connect/)
