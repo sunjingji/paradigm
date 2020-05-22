@@ -1,8 +1,13 @@
-# paradigm
-设计范式，架构工具箱
+# security
 
 - aksk
 AK/SK认证，百度云API签名的例子
+
+- hmac
+HMAC例子
+
+- jwt
+JWT例子
 
 - oauth2 
   /github: 访问github用户的例子
